@@ -42,9 +42,7 @@ async def list_items(
         offset=items_filters.offset,
         requested_user=user,
     )
-    items_for_response = [
-        ItemForResponse.from_orm(item) for item in items
-    ]
+    items_for_response = [ItemForResponse.from_orm(item) for item in items]
     return ListOfItemsInResponse(
         items=items_for_response,
         items_count=len(items),
@@ -76,8 +74,10 @@ async def create_new_item(
         seller=user,
         tags=item_create.tags,
         image=item_create.image
+        if item_create.image
+        else "../../../../../frontend/public/placeholder.png",
     )
-    send_event('item_created', {'item': item_create.title})
+    send_event("item_created", {"item": item_create.title})
     return ItemInResponse(item=ItemForResponse.from_orm(item))
 
 
